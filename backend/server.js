@@ -2,8 +2,10 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const app = express();
+const fs = require('fs');
 
-const orders = [];
+const orders = JSON.parse(fs.readFileSync('./orders.json', 'utf8'));
+console.log(orders)
 
 app.use(cors());
 app.use(express.json());
@@ -25,8 +27,22 @@ app.get("/api/order", (req, res) => {
 });
 
 app.post("/api/order", (req, res) => {
-  orders.push(req.body)
-  res.send("DONE")
+  const data = req.body;
+  fs.readFile('./orders.json', 'utf8', (err, fileData) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      let jsonData = JSON.parse(fileData);
+      jsonData.orders.push(data);
+      fs.writeFile('./orders.json', JSON.stringify(jsonData, null, 2), (err) => {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.send('Data appended to file');
+        }
+      });
+    }
+  });
 });
 
 app.get("/pizza/list/order", (req, res, next) => {
