@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const fs = require('fs');
 
-const orders = JSON.parse(fs.readFileSync('./orders.json', 'utf8'));
+const orders = JSON.parse(fs.readFileSync('./orders.json', 'utf8')).orders;
 console.log(orders)
 
 app.use(cors());
@@ -27,7 +27,13 @@ app.get("/api/order", (req, res) => {
 });
 
 app.post("/api/order", (req, res) => {
-  const data = req.body;
+  let data = req.body;
+  data.id = orders.length + 1;
+  data.date.year = new Date().getFullYear();
+  data.date.month = new Date().getMonth() + 1;
+  data.date.day = new Date().getDate();
+  data.date.hour = new Date().getHours();
+  data.date.minute = new Date().getMinutes();
   fs.readFile('./orders.json', 'utf8', (err, fileData) => {
     if (err) {
       res.status(500).send(err);
