@@ -23,6 +23,62 @@
           "street": "Via Appia 6"
         }
       }
+    },
+    {
+      "id": 2,
+      "pizzas": [
+        {
+          "id": 4,
+          "amount": 2
+        },
+        {
+          "id": 2,
+          "amount": 3
+        },
+        {
+          "id": 1,
+          "amount": 1
+        }
+      ],
+      "date": {
+        "year": 2023,
+        "month": 3,
+        "day": 12,
+        "hour": 3,
+        "minute": 21
+      },
+      "customer": {
+        "name": "Daniel",
+        "email": "dani.marinescu7@gmail.com",
+        "address": {
+          "city": "Timisoara",
+          "street": "Plopului"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "pizzas": [
+        {
+          "id": 6,
+          "amount": 2
+        }
+      ],
+      "date": {
+        "year": 2023,
+        "month": 3,
+        "day": 12,
+        "hour": 3,
+        "minute": 23
+      },
+      "customer": {
+        "name": "Dani",
+        "email": "dani.marinescu7@gmail.com",
+        "address": {
+          "city": "Timisoara",
+          "street": "Plopului"
+        }
+      }
     }
   ]
 }

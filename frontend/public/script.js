@@ -110,7 +110,7 @@ const addModal = () => {
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Submit order</button>
+                            <button type="button" id="submit-order" class="btn btn-primary">Submit order</button>
                             <button id="close-modal" type="button" class="btn btn-secondary close">Close</button>
                         </div>
                     </div>
@@ -167,7 +167,7 @@ const addToCartEventListener = () => {
     }));
 }
 const addPizzaToOrder = (name, quantity, price) => {
-    return `<div class="col-md-6 d-flex justify-content-between"><span>${name}</span><span>${quantity} x${price}$</span></div>`
+    return `<div class="pizza col-md-6 d-flex justify-content-between"><span>${name}</span><span>${quantity} x${price}$</span></div>`
 }
 
 const cartEventListener = () => {
@@ -196,6 +196,46 @@ const closeModal = () => {
     }
 }
 
+const submitOrder = (arr) => {
+    document.getElementById("submit-order").addEventListener('click', () => {
+        let order = {
+            "id": 1,
+            "pizzas": [],
+            "date": {
+              "year": new Date().getFullYear(),
+              "month": new Date().getMonth() + 1,
+              "day": new Date().getDate(),
+              "hour": new Date().getHours(),
+              "minute": new Date().getMinutes()
+            },
+            "customer": {
+              "name": document.getElementById('inputName').value,
+              "email": document.getElementById('inputEmail').value,
+              "address": {
+                "city": document.getElementById('inputCity').value,
+                "street": document.getElementById('inputStreet').value
+              }
+            }
+        };
+        document.querySelectorAll('.pizza').forEach(element => {
+            order.pizzas.push({
+                "id": +arr.find(pizza => pizza.name == element.children[0].innerText).id,
+                "amount": +element.children[1].innerText.substring(0, 1)
+            })
+        });
+
+        fetch('http://127.0.0.1:9001/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        });
+
+        window.location.reload();
+    });
+}
+
 const showPizzas = (arr) => {
     rootElement.insertAdjacentHTML('afterbegin', addContainer());
     rootElement.insertAdjacentHTML('afterbegin', addNavbar(allergens));
@@ -206,6 +246,7 @@ const showPizzas = (arr) => {
     cartEventListener();
     rootElement.insertAdjacentHTML('beforeend', addModal());
     closeModal();
+    submitOrder(arr);
 }
 
 const showAllergen = (arr, id) => arr.find(allergen => allergen.id === id).name;
