@@ -77,9 +77,15 @@ const addPizzaElement = (content) => {
 }
 
 const addModal = () => {
-    return `<div id="modal" class="modal bg-secondary bg-opacity-50" tabindex="-1" role="dialog">
+    return `
+    <div id="modal" class="modal bg-secondary bg-opacity-50" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
+                        <div id="toast" class="toast d-none align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">Your order has been submitted!</div>
+                            </div>
+                        </div>
                         <div class="modal-header">
                             <h5 class="modal-title">Cart details</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -232,7 +238,11 @@ const submitOrder = (arr) => {
             body: JSON.stringify(order)
         });
 
-        window.location.reload();
+        document.getElementById('toast').classList.remove('d-none');
+        document.getElementById('toast').classList.add('d-block');
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000);
     });
 }
 
